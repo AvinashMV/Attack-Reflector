@@ -2,10 +2,7 @@
 Project of Software Security. 
 
 Implemented RFC 2616 standard. 
-When other host attacks victim(server), it sends back the packet to attacker, which was intended to target the victim. So essentially attacker 
-attacks himself.
-
-Implementated of ARP, IP  TCP, UDP protocols in scapy python library. Server listens and sends valid HTTP responses as well.
+When other host attacks victim(server), it sends back the packet to attacker, which was intended to target the victim. So essentially attacker  attacks himself. Implemented ARP, IP  TCP, UDP protocols in scapy python library. Server listens and sends valid HTTP responses as well.
 
 
 About the Program: 
@@ -22,7 +19,7 @@ In this way, program will impersonate two IP address (victim and reflector), and
 
 
 Testing
- script test_reflector.sh was provided which will allow you to test the reflector on a single Ubuntu 16.04 machine (without using a virtual machine or another computer on the network to simulate the attacker). This uses network namespaces, a Linux kernel feature that allows having multiple network namespaces. The script uses this feature to simulate having multiple computers on a network (by using a virtual ethernet device). 
+script test_reflector.sh was provided which will allow you to test the reflector on a single Ubuntu 16.04 machine (without using a virtual machine or another computer on the network to simulate the attacker). This uses network namespaces, a Linux kernel feature that allows having multiple network namespaces. The script uses this feature to simulate having multiple computers on a network (by using a virtual ethernet device). 
 
 First, download the test_reflector.sh script to the same directory that your reflector is in.
 
